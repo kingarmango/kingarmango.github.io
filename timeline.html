@@ -15,14 +15,14 @@
       --bg: #f7f5f2;
       --fg: #1a1a18;
       --muted: #7a7a72;
-      --border: #d8d5cf;
+      --border: rgba(180, 176, 168, 0.35);
     }
 
     [data-theme="dark"] {
       --bg: #111110;
       --fg: #e8e6e1;
       --muted: #6b6b63;
-      --border: #2a2a27;
+      --border: rgba(80, 78, 72, 0.4);
     }
 
     html {
@@ -69,16 +69,24 @@
       text-decoration: none;
     }
 
-    .header-left h1 a:hover {
-      opacity: 0.6;
+    .header-left h1 a:hover { opacity: 0.6; }
+
+    .social-links {
+      display: flex;
+      gap: 14px;
+      margin-top: 6px;
     }
 
-    .header-left .page-label {
+    .social-links a {
       font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--muted);
-      margin-top: 4px;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
     }
+
+    .social-links a:hover { color: var(--fg); }
 
     .toggle {
       background: none;
@@ -106,12 +114,7 @@
       transition: fill 0.2s;
     }
 
-    /* Timeline */
-    .timeline {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
+    .timeline { display: flex; flex-direction: column; }
 
     .entry {
       display: grid;
@@ -122,9 +125,7 @@
       transition: border-color 0.25s;
     }
 
-    .entry:last-child {
-      border-bottom: 1px solid var(--border);
-    }
+    .entry:last-child { border-bottom: 1px solid var(--border); }
 
     .date {
       font-family: 'DM Mono', monospace;
@@ -135,10 +136,7 @@
       letter-spacing: 0.01em;
     }
 
-    .event {
-      font-size: 0.98rem;
-      color: var(--fg);
-    }
+    .event { font-size: 0.98rem; color: var(--fg); }
 
     .event a {
       color: var(--fg);
@@ -148,11 +146,26 @@
       transition: text-decoration-color 0.2s;
     }
 
-    .event a:hover {
-      text-decoration-color: var(--fg);
+    .event a:hover { text-decoration-color: var(--fg); }
+
+    .event a.bold { font-weight: 600; }
+
+    /* Typewriter cursor */
+    .cursor {
+      display: inline-block;
+      width: 1.5px;
+      height: 0.9em;
+      background: var(--fg);
+      margin-left: 1px;
+      vertical-align: text-bottom;
+      animation: blink 0.75s step-end infinite;
     }
 
-    /* Footer */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
     footer {
       border-top: 1px solid var(--border);
       padding: 20px 24px;
@@ -162,6 +175,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 16px;
       transition: border-color 0.25s;
     }
 
@@ -188,7 +202,12 @@
   <div class="header">
     <div class="header-left">
       <h1><a href="index.html">armango</a></h1>
-      <div class="page-label">timeline</div>
+      <div class="social-links">
+        <a href="#" target="_blank">X</a>
+        <a href="https://instagram.com/armango___" target="_blank">IG</a>
+        <a href="https://tiktok.com/@armangoon" target="_blank">TT</a>
+        <a href="#" target="_blank">YT</a>
+      </div>
     </div>
     <button class="toggle" id="themeToggle" aria-label="Toggle theme">
       <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -199,28 +218,24 @@
 
   <div class="timeline">
 
-    <!-- ADD YOUR ENTRIES HERE — most recent at top -->
-    <!-- Format: MM.DD.YY on the left, event on the right -->
-    <!-- Link format: <a href="https://...">thing</a> -->
-
     <div class="entry">
-      <span class="date">04.23.26</span>
-      <span class="event">more soon...</span>
+      <span class="date" id="liveDate"></span>
+      <span class="event"><span id="typewriter"></span><span class="cursor"></span></span>
     </div>
 
     <div class="entry">
       <span class="date">04.23.26</span>
-      <span class="event">pivoted <a href="#">matteblackmedia</a> focus for the 3rd time</span>
+      <span class="event">pivoted <a href="#" class="bold">matteblackmedia</a> focus for the 3rd time</span>
     </div>
 
     <div class="entry">
       <span class="date">01.08.26</span>
-      <span class="event">founded <a href="#">matteblackmedia</a></span>
+      <span class="event">founded <a href="#" class="bold">matteblackmedia</a></span>
     </div>
 
     <div class="entry">
       <span class="date">11.24.25</span>
-      <span class="event">gained consciousess</span>
+      <span class="event">gained consciousness</span>
     </div>
 
     <div class="entry">
@@ -228,32 +243,42 @@
       <span class="event">born</span>
     </div>
 
-    <!-- Keep adding entries above this line -->
-
   </div>
 </main>
 
 <footer>
   <span id="footerTime"></span>
-  <a href="kingarmango.github.io">home</a>
-  <a href="mailto:armangodev@gmail.com" target="_blank">reach out</a>
+  <a href="https://kingarmango.github.io">home</a>
+  <a href="mailto:armangodev@gmail.com">reach out</a>
 </footer>
 
 <script>
+  // Theme
   const toggle = document.getElementById('themeToggle');
   const html = document.documentElement;
-
   const stored = localStorage.getItem('theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   if (stored) html.setAttribute('data-theme', stored);
   else if (prefersDark) html.setAttribute('data-theme', 'dark');
-
   toggle.addEventListener('click', () => {
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
 
+  // Live date MM.DD.YY
+  function getLiveDate() {
+    const now = new Date();
+    const mm = (now.getMonth() + 1).toString().padStart(2, '0');
+    const dd = now.getDate().toString().padStart(2, '0');
+    const yy = now.getFullYear().toString().slice(2);
+    return `${mm}.${dd}.${yy}`;
+  }
+  const liveDateEl = document.getElementById('liveDate');
+  liveDateEl.textContent = getLiveDate();
+  setInterval(() => { liveDateEl.textContent = getLiveDate(); }, 60000);
+
+  // Footer clock
   const timeEl = document.getElementById('footerTime');
   function updateTime() {
     const now = new Date();
@@ -264,6 +289,41 @@
   }
   updateTime();
   setInterval(updateTime, 1000);
+
+  // Typewriter — cycles: type → pause → delete → pause → repeat
+  const text = 'more soon...';
+  const el = document.getElementById('typewriter');
+  let i = 0;
+  let typing = true;
+
+  const TYPE_SPEED   = 80;
+  const DELETE_SPEED = 40;
+  const PAUSE_FULL   = 2400;
+  const PAUSE_EMPTY  = 500;
+
+  function tick() {
+    if (typing) {
+      i++;
+      el.textContent = text.slice(0, i);
+      if (i >= text.length) {
+        typing = false;
+        setTimeout(tick, PAUSE_FULL);
+      } else {
+        setTimeout(tick, TYPE_SPEED);
+      }
+    } else {
+      i--;
+      el.textContent = text.slice(0, i);
+      if (i <= 0) {
+        typing = true;
+        setTimeout(tick, PAUSE_EMPTY);
+      } else {
+        setTimeout(tick, DELETE_SPEED);
+      }
+    }
+  }
+
+  setTimeout(tick, 900);
 </script>
 
 </body>
