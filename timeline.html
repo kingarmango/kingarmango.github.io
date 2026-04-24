@@ -6,7 +6,7 @@
   <title>timeline — armango</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&family=Inter:wght@600&display=swap" rel="stylesheet" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,18 +64,10 @@
       line-height: 1.15;
     }
 
-    .header-left h1 a {
-      color: var(--fg);
-      text-decoration: none;
-    }
-
+    .header-left h1 a { color: var(--fg); text-decoration: none; }
     .header-left h1 a:hover { opacity: 0.6; }
 
-    .social-links {
-      display: flex;
-      gap: 14px;
-      margin-top: 6px;
-    }
+    .social-links { display: flex; gap: 14px; margin-top: 6px; }
 
     .social-links a {
       font-family: 'DM Mono', monospace;
@@ -147,8 +139,42 @@
     }
 
     .event a:hover { text-decoration-color: var(--fg); }
-
     .event a.bold { font-weight: 600; }
+
+    /* === VIBECODING === */
+    .vibecoding {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0;
+      position: relative;
+      top: 1px;
+    }
+
+    .vibecoding .vc-letter {
+      display: inline-block;
+      animation: wave 1.4s ease-in-out infinite, rainbow 3s linear infinite;
+      will-change: transform, color;
+    }
+
+    @keyframes wave {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-4px); }
+    }
+
+    /* Rainbow via hue rotation — each letter offset by delay */
+    @keyframes rainbow {
+      0%   { color: hsl(0,   90%, 58%); }
+      14%  { color: hsl(50,  90%, 52%); }
+      28%  { color: hsl(100, 80%, 45%); }
+      42%  { color: hsl(180, 85%, 42%); }
+      57%  { color: hsl(220, 90%, 60%); }
+      71%  { color: hsl(270, 85%, 62%); }
+      85%  { color: hsl(320, 85%, 58%); }
+      100% { color: hsl(360, 90%, 58%); }
+    }
 
     /* Typewriter cursor */
     .cursor {
@@ -237,7 +263,7 @@
       <span class="date">01.02.26</span>
       <span class="event">premier existential crisis</span>
     </div>
-    
+
     <div class="entry">
       <span class="date">11.24.25</span>
       <span class="event">gained consciousness</span>
@@ -247,17 +273,17 @@
       <span class="date">07.26.25</span>
       <span class="event">existential crisis in greece, first of many</span>
     </div>
-    
+
     <div class="entry">
       <span class="date">06.05.25</span>
       <span class="event">seriously delves into finance/trading, understands it's not for me</span>
     </div>
-    
+
     <div class="entry">
       <span class="date">05.05.25</span>
-      <span class="event">discovers vibecoding, builds OpenAI API Web App that answers in industry specific context (for fun)</span>
+      <span class="event">discovers <span class="vibecoding" id="vc"></span>, builds OpenAI API Web App that answers in industry specific context (for fun)</span>
     </div>
-    
+
     <div class="entry">
       <span class="date">09.30.08</span>
       <span class="event">born</span>
@@ -286,6 +312,20 @@
     localStorage.setItem('theme', next);
   });
 
+  // Build vibecoding letters
+  const word = 'vibecoding';
+  const vcEl = document.getElementById('vc');
+  word.split('').forEach((ch, idx) => {
+    const span = document.createElement('span');
+    span.className = 'vc-letter';
+    span.textContent = ch;
+    // Stagger wave + rainbow per letter
+    const waveDelay   = (idx / word.length * 1.4).toFixed(2);
+    const rainbowDelay = -(idx / word.length * 3).toFixed(2);
+    span.style.animationDelay = `${waveDelay}s, ${rainbowDelay}s`;
+    vcEl.appendChild(span);
+  });
+
   // Live date MM.DD.YY
   function getLiveDate() {
     const now = new Date();
@@ -310,39 +350,26 @@
   updateTime();
   setInterval(updateTime, 1000);
 
-  // Typewriter — cycles: type → pause → delete → pause → repeat
+  // Typewriter
   const text = 'more soon...';
   const el = document.getElementById('typewriter');
   let i = 0;
   let typing = true;
-
-  const TYPE_SPEED   = 80;
-  const DELETE_SPEED = 40;
-  const PAUSE_FULL   = 2400;
-  const PAUSE_EMPTY  = 500;
+  const TYPE_SPEED = 80, DELETE_SPEED = 40, PAUSE_FULL = 2400, PAUSE_EMPTY = 500;
 
   function tick() {
     if (typing) {
       i++;
       el.textContent = text.slice(0, i);
-      if (i >= text.length) {
-        typing = false;
-        setTimeout(tick, PAUSE_FULL);
-      } else {
-        setTimeout(tick, TYPE_SPEED);
-      }
+      if (i >= text.length) { typing = false; setTimeout(tick, PAUSE_FULL); }
+      else setTimeout(tick, TYPE_SPEED);
     } else {
       i--;
       el.textContent = text.slice(0, i);
-      if (i <= 0) {
-        typing = true;
-        setTimeout(tick, PAUSE_EMPTY);
-      } else {
-        setTimeout(tick, DELETE_SPEED);
-      }
+      if (i <= 0) { typing = true; setTimeout(tick, PAUSE_EMPTY); }
+      else setTimeout(tick, DELETE_SPEED);
     }
   }
-
   setTimeout(tick, 900);
 </script>
 
