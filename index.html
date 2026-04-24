@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>armango, founder of matteblackmedia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f7f5f2;
+      --fg: #1a1a18;
+      --muted: #7a7a72;
+      --border: #d8d5cf;
+      --link: #1a1a18;
+      --link-hover: #555550;
+      --toggle-bg: #1a1a18;
+      --toggle-fg: #f7f5f2;
+    }
+
+    [data-theme="dark"] {
+      --bg: #111110;
+      --fg: #e8e6e1;
+      --muted: #6b6b63;
+      --border: #2a2a27;
+      --link: #e8e6e1;
+      --link-hover: #aaa89f;
+      --toggle-bg: #e8e6e1;
+      --toggle-fg: #111110;
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.65;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1;
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 72px 24px 48px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    /* Theme toggle */
+    .toggle {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 5px;
+      transition: border-color 0.2s;
+      color: var(--fg);
+      padding: 0;
+    }
+
+    .toggle:hover {
+      border-color: var(--fg);
+    }
+
+    .toggle svg {
+      width: 14px;
+      height: 14px;
+      fill: var(--fg);
+      transition: fill 0.2s;
+    }
+
+    /* Bio */
+    .bio {
+      font-size: 1.05rem;
+      color: var(--fg);
+      margin-bottom: 40px;
+      max-width: 520px;
+    }
+
+    .bio a {
+      color: var(--link);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: var(--border);
+      transition: text-decoration-color 0.2s, color 0.2s;
+    }
+
+    .bio a:hover {
+      text-decoration-color: var(--fg);
+    }
+
+    /* Nav links */
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 0;
+      margin-bottom: 16px;
+    }
+
+    nav a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      margin-right: 22px;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--fg);
+    }
+
+    .social-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 0;
+      margin-bottom: 0;
+    }
+
+    .social-row a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      margin-right: 22px;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+
+    .social-row a:hover {
+      color: var(--fg);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 24px;
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.25s;
+    }
+
+    footer span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+    }
+
+    footer a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: var(--fg);
+    }
+
+    /* Fade in */
+    main {
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      main { padding: 48px 20px 36px; }
+      h1 { font-size: 1.6rem; }
+      .bio { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="header">
+    <h1>armango</h1>
+    <button class="toggle" id="themeToggle" aria-label="Toggle theme">
+      <!-- half-circle icon, like the reference -->
+      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zm0 1v10a5 5 0 0 1 0-10z"/>
+      </svg>
+    </button>
+  </div>
+
+  <p class="bio">
+    <!-- EDIT THIS — write it like a sentence, not a resume -->
+    currently dedicating myself to building <a href="#">matteblackmedia</a> and writing my <a href="#">first book</a>,
+    on the side: powerbuilding, youtube, vibecoding.
+  </p>
+
+  <nav>
+    <a href="#">projects</a>
+    <a href="#">timeline</a>
+    <a href="#">contact</a>
+  </nav>
+
+  <div class="social-row">
+    <a href="https://www.instagram.com/armango___/?hl=en">instagram</a>
+    <a href="#">tiktok</a>
+    <a href="#">x</a>
+  </div>
+</main>
+
+<footer>
+  <span>© 2026 armango</span>
+  <a href="mailto:armangodev@email.com">reach out</a>
+</footer>
+
+<script>
+  const toggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
+
+  // Respect system preference on first load
+  const stored = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (stored) {
+    html.setAttribute('data-theme', stored);
+  } else if (prefersDark) {
+    html.setAttribute('data-theme', 'dark');
+  }
+
+  toggle.addEventListener('click', () => {
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+
+  // Live clock in footer
+  const timeEl = document.createElement('span');
+  document.querySelector('footer').prepend(timeEl);
+  // remove the static copyright from footer left, replace with clock + name
+  const staticYear = document.querySelector('footer span:last-of-type');
+
+  function updateTime() {
+    const now = new Date();
+    const h = now.getHours().toString().padStart(2,'0');
+    const m = now.getMinutes().toString().padStart(2,'0');
+    const s = now.getSeconds().toString().padStart(2,'0');
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone.toLowerCase().replace('_',' ');
+    timeEl.style.fontFamily = "'DM Mono', monospace";
+    timeEl.style.fontSize = "0.72rem";
+    timeEl.style.color = "var(--muted)";
+    timeEl.textContent = `${h}:${m}:${s} mst`;
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
+</script>
+
+</body>
+</html>
