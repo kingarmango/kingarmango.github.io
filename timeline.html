@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>timeline — armango</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5f2;
+      --fg: #1a1a18;
+      --muted: #7a7a72;
+      --border: #d8d5cf;
+    }
+
+    [data-theme="dark"] {
+      --bg: #111110;
+      --fg: #e8e6e1;
+      --muted: #6b6b63;
+      --border: #2a2a27;
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.65;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+
+    main {
+      flex: 1;
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 72px 24px 48px;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+
+    .header-left h1 {
+      font-size: 1.9rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .header-left h1 a {
+      color: var(--fg);
+      text-decoration: none;
+    }
+
+    .header-left h1 a:hover {
+      opacity: 0.6;
+    }
+
+    .header-left .page-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .toggle {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 5px;
+      transition: border-color 0.2s;
+      color: var(--fg);
+      padding: 0;
+    }
+
+    .toggle:hover { border-color: var(--fg); }
+
+    .toggle svg {
+      width: 14px;
+      height: 14px;
+      fill: var(--fg);
+      transition: fill 0.2s;
+    }
+
+    /* Timeline */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 0 24px;
+      padding: 10px 0;
+      border-top: 1px solid var(--border);
+      transition: border-color 0.25s;
+    }
+
+    .entry:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      padding-top: 3px;
+      white-space: nowrap;
+      letter-spacing: 0.01em;
+    }
+
+    .event {
+      font-size: 0.98rem;
+      color: var(--fg);
+    }
+
+    .event a {
+      color: var(--fg);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: var(--border);
+      transition: text-decoration-color 0.2s;
+    }
+
+    .event a:hover {
+      text-decoration-color: var(--fg);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 24px;
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.25s;
+    }
+
+    footer span, footer a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--fg); }
+
+    @media (max-width: 480px) {
+      main { padding: 48px 20px 36px; }
+      .entry { grid-template-columns: 80px 1fr; gap: 0 12px; }
+      .date { font-size: 0.68rem; }
+      .event { font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="header">
+    <div class="header-left">
+      <h1><a href="index.html">armango</a></h1>
+      <div class="page-label">timeline</div>
+    </div>
+    <button class="toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zm0 1v10a5 5 0 0 1 0-10z"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="timeline">
+
+    <!-- ADD YOUR ENTRIES HERE — most recent at top -->
+    <!-- Format: MM.DD.YY on the left, event on the right -->
+    <!-- Link format: <a href="https://...">thing</a> -->
+
+    <div class="entry">
+      <span class="date">04.23.26</span>
+      <span class="event">more soon...</span>
+    </div>
+
+    <div class="entry">
+      <span class="date">01.01.26</span>
+      <span class="event">pivoted <a href="#">matteblackmedia</a> focus for the second time</span>
+    </div>
+
+    <div class="entry">
+      <span class="date">01.08.26</span>
+      <span class="event">founded <a href="#">matteblackmedia</a></span>
+    </div>
+
+    <div class="entry">
+      <span class="date">11.24.25</span>
+      <span class="event">gained consciousess<a href="#">[something]</a></span>
+    </div>
+
+    <div class="entry">
+      <span class="date">09.20.08</span>
+      <span class="event">born</span>
+    </div>
+
+    <!-- Keep adding entries above this line -->
+
+  </div>
+</main>
+
+<footer>
+  <span id="footerTime"></span>
+  <a href="mailto:armangodev@email.com">reach out</a>
+</footer>
+
+<script>
+  const toggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
+
+  const stored = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (stored) html.setAttribute('data-theme', stored);
+  else if (prefersDark) html.setAttribute('data-theme', 'dark');
+
+  toggle.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+
+  const timeEl = document.getElementById('footerTime');
+  function updateTime() {
+    const now = new Date();
+    const h = now.getHours().toString().padStart(2,'0');
+    const m = now.getMinutes().toString().padStart(2,'0');
+    const s = now.getSeconds().toString().padStart(2,'0');
+    timeEl.textContent = `${h}:${m}:${s} mst`;
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
+</script>
+
+</body>
+</html>
