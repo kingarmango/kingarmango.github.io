@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>projects — armango</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5f2;
+      --fg: #1a1a18;
+      --muted: #7a7a72;
+      --border: #d8d5cf;
+      --link: #1a1a18;
+      --link-hover: #555550;
+      --toggle-bg: #1a1a18;
+      --toggle-fg: #f7f5f2;
+    }
+
+    [data-theme="dark"] {
+      --bg: #111110;
+      --fg: #e8e6e1;
+      --muted: #6b6b63;
+      --border: #2a2a27;
+      --link: #e8e6e1;
+      --link-hover: #aaa89f;
+      --toggle-bg: #e8e6e1;
+      --toggle-fg: #111110;
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.65;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+
+    main {
+      flex: 1;
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 72px 24px 48px;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+
+    .header-left h1 { font-size: 1.9rem; font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; }
+    .header-left h1 a { color: var(--fg); text-decoration: none; }
+    .header-left h1 a:hover { opacity: 0.6; }
+
+    .social-links { display: flex; gap: 14px; margin-top: 6px; }
+    .social-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .social-links a:hover { color: var(--fg); }
+
+    .toggle {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 5px;
+      transition: border-color 0.2s;
+      color: var(--fg);
+      padding: 0;
+    }
+    .toggle:hover { border-color: var(--fg); }
+    .toggle svg { width: 14px; height: 14px; fill: var(--fg); transition: fill 0.2s; }
+
+    /* Page title */
+    .page-title { margin-bottom: 6px; }
+    .page-title h2 { font-size: 1.9rem; font-weight: 500; letter-spacing: -0.02em; }
+    .page-subtitle {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 48px;
+      font-style: italic;
+    }
+
+    /* Projects list */
+    .projects { display: flex; flex-direction: column; }
+
+    /* =============================================
+       PROJECT ENTRY — copy/paste this block to add
+       a new project. Fill in the fields marked EDIT.
+       ============================================= */
+    .project {
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+      transition: border-color 0.25s;
+    }
+    .project:last-child { border-bottom: 1px solid var(--border); }
+
+    .project-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+      gap: 12px;
+    }
+
+    .project-name {
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .project-dates {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .project-role {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .project-desc {
+      font-size: 0.95rem;
+      color: var(--fg);
+      margin-bottom: 14px;
+      max-width: 520px;
+    }
+
+    .project-links { display: flex; flex-wrap: wrap; gap: 0; }
+    .project-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      margin-right: 18px;
+      transition: color 0.2s;
+      letter-spacing: 0.01em;
+    }
+    .project-links a:hover { color: var(--fg); }
+    .project-links a::after { content: ' →'; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 24px;
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      transition: border-color 0.25s;
+    }
+    footer span, footer a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    footer a:hover { color: var(--fg); }
+
+    @media (max-width: 480px) {
+      main { padding: 48px 20px 36px; }
+      .project-meta { flex-direction: column; gap: 2px; }
+      .project-name { font-size: 1rem; }
+      .project-desc { font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="header">
+      <div class="header-left">
+        <h1><a href="index.html">armango</a></h1>
+        <div class="social-links">
+          <a href="https://x.com/kingarmango" target="_blank">X</a>
+          <a href="https://instagram.com/armango___" target="_blank">IG</a>
+          <a href="https://tiktok.com/@armangoon" target="_blank">TT</a>
+        </div>
+      </div>
+      <button class="toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zm0 1v10a5 5 0 0 1 0-10z"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="page-title">
+      <h2>projects</h2>
+    </div>
+    <p class="page-subtitle">everything i'm building and have built.</p>
+
+    <div class="projects">
+
+      <!-- ============================================================
+           COPY THIS BLOCK TO ADD A NEW PROJECT
+           Replace the EDIT comments with your content
+           ============================================================ -->
+      <div class="project">
+        <div class="project-meta">
+          <span class="project-name">matteblackmedia</span>          <!-- EDIT: project name -->
+          <span class="project-dates">01.08.26, present</span>       <!-- EDIT: dates -->
+        </div>
+        <div class="project-role">founder</div>                      <!-- EDIT: your role -->
+        <p class="project-desc">
+          media brand in the making. currently on pivot #3 — figuring out the angle.
+          building in public, slowly.                                 <!-- EDIT: description -->
+        </p>
+        <div class="project-links">
+          <a href="#">website</a>                                     <!-- EDIT: links — delete any you don't need -->
+          <a href="#">x</a>
+        </div>
+      </div>
+      <!-- ============================================================
+           END COPY BLOCK
+           ============================================================ -->
+
+      <div class="project">
+        <div class="project-meta">
+          <span class="project-name">first book</span>
+          <span class="project-dates">2026, present</span>
+        </div>
+        <div class="project-role">author</div>
+        <p class="project-desc">
+          writing my first book. it's going slowly and i'm okay with that.
+        </p>
+        <div class="project-links">
+          <a href="#">updates</a>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-meta">
+          <span class="project-name">openai context app</span>
+          <span class="project-dates">05.2025</span>
+        </div>
+        <div class="project-role">solo build</div>
+        <p class="project-desc">
+          web app built for fun that answers questions through the openai api with industry-specific context. first real thing i shipped with vibecoding.
+        </p>
+        <div class="project-links">
+          <a href="#">github</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <span id="footerTime"></span>
+    <a href="index.html">home</a>
+    <a href="mailto:armangodev@gmail.com">reach out</a>
+  </footer>
+
+  <script>
+    // Theme toggle
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const stored = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (stored) html.setAttribute('data-theme', stored);
+    else if (prefersDark) html.setAttribute('data-theme', 'dark');
+    toggle.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+
+    // Footer clock
+    const timeEl = document.getElementById('footerTime');
+    function updateTime() {
+      const now = new Date();
+      const h = now.getHours().toString().padStart(2,'0');
+      const m = now.getMinutes().toString().padStart(2,'0');
+      const s = now.getSeconds().toString().padStart(2,'0');
+      timeEl.textContent = `${h}:${m}:${s} mst`;
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
+  </script>
+</body>
+</html>
